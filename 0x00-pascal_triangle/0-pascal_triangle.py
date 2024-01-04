@@ -1,5 +1,18 @@
 #!/usr/bin/python3
 
+"""
+Module: 0-pascal_triangle
+
+This module provides function to generate Pascal's triangle up to nth row.
+
+Functions:
+- pascal_triangle(n): Generates Pascal's triangle up to the nth row.
+
+Usage:
+Example usage is provided in the main block at the end of this file.
+
+"""
+
 
 def pascal_triangle(n):
     """
