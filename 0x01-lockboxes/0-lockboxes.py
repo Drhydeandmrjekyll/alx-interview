@@ -1,11 +1,29 @@
 #!/usr/bin/python3
 
+"""
+Module with a function canUnlockAll to determine if all
+locked boxes can be opened.
+"""
 
-def canUnlockAll(boxes):
+from typing import List
+
+
+def canUnlockAll(boxes: List[List[int]]) -> bool:
+    """
+    Determines if all the boxes can be opened.
+
+    Args:
+        boxes (List[List[int]]): List of lists representing locked boxes.
+
+    Returns:
+        bool: True if all boxes can be opened, else False.
+    """
+
     if not boxes or not boxes[0]:
         return False
 
     num_boxes = len(boxes)
+
     unlocked_boxes = [False] * num_boxes
     unlocked_boxes[0] = True
 
@@ -15,6 +33,7 @@ def canUnlockAll(boxes):
         current_box = keys_stack.pop()
 
         for key in boxes[current_box]:
+
             if 0 <= key < num_boxes and not unlocked_boxes[key]:
                 unlocked_boxes[key] = True
                 keys_stack.append(key)
@@ -23,6 +42,7 @@ def canUnlockAll(boxes):
 
 
 if __name__ == "__main__":
+
     boxes1 = [[1], [2], [3], [4], []]
     print(canUnlockAll(boxes1))
 
