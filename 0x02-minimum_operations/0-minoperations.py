@@ -2,9 +2,7 @@
 """
 Script defines method minOperations(n) that calculates fewest number
 of operations needed to result in exactly n 'H' characters in a
-text file. The two allowed operations are Copy All and Paste.
-
-If n is impossible to achieve,method returns 0.
+text file.
 """
 
 
