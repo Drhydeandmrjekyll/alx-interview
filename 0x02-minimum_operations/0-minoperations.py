@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Module to get min operations"""
+"""
+Module to get min operations
+"""
 
 
 def minOperations(n):
-    """ Calculate Minimum Operations"""
+    """
+    Calculate Minimum Operations.
+    """
     if not isinstance(n, int) or n <= 1:
         return 0
     b = 1
