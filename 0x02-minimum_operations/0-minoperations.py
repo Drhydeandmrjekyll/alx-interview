@@ -9,18 +9,13 @@ If n is impossible to achieve,method returns 0.
 
 
 def minOperations(n):
-    if n <= 0:
+    """Calculate Minimum Operations"""
+    if not isinstance(n, int) or n <= 1:
         return 0
-
-    operations = 0
-    clipboard = 1
-
-    while clipboard < n:
-        if n % clipboard == 0:
-            clipboard = n // clipboard
-            operations += 2
-        else:
-            clipboard += clipboard
-            operations += 1
-
-    return operations
+    b = 1
+    for i in range(n - 1, 0, -1):
+        if n % i == 0:
+            b = (i if i != 0 else 1)
+            break
+    z = int((minOperations(b) if b != 1 else 0) + n / b)
+    return z
