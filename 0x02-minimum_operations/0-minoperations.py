@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script defines method minOperations(n) that calculates fewest number
-of operations needed to result in exactly n 'H' characters in a
-text file.
-"""
+"""Module to get min operations"""
 
 
 def minOperations(n):
