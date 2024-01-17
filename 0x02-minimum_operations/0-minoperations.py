@@ -6,6 +6,7 @@ result in exactly n 'H' characters in a text file. The two
 allowed operations are Copy All and Paste.
 """
 
+
 def minOperations(n):
     """
     Calculate Minimum Operations.
