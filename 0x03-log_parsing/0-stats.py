@@ -1,14 +1,24 @@
 #!/usr/bin/python3
+"""
+Log Parsing Script - Reads stdin, computes metrics, and prints statistics.
+"""
+
 import sys
 
 
 def print_stats(total_size, status_codes):
+    """
+    Prints statistics including total file size and status codes.
+    """
     print("File size: {}".format(total_size))
     for code in sorted(status_codes):
         print("{}: {}".format(code, status_codes[code]))
 
 
 def parse_line(line):
+    """
+    Parses a log line and extracts status code and file size.
+    """
     parts = line.split()
     if len(parts) >= 9:
         status_code = parts[-2]
@@ -22,6 +32,9 @@ def parse_line(line):
 
 
 def main():
+    """
+    Main function to read input, parse lines, and print statistics.
+    """
     total_size = 0
     status_codes = {}
 
@@ -38,10 +51,11 @@ def main():
                 print_stats(total_size, status_codes)
 
     except KeyboardInterrupt:
+        # Handle keyboard interrupt, print final stats, and exit
         print_stats(total_size, status_codes)
         sys.exit(0)
     except BrokenPipeError:
-        # Ignore BrokenPipeError when output is not consumed by next process
+        # Ignore BrokenPipeError when output not consumed by next process
         sys.exit(0)
 
 
