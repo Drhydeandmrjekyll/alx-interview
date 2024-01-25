@@ -1,51 +1,45 @@
 #!/usr/bin/python3
-"""Log Parsing Script - Reads stdin, computes metrics,
-and prints statistics."""
-
+"""This module read stdin and compute metrics"""
 import sys
 
 
-def print_metrics(total_size, status_counts):
-    """Prints accumulated metrics including total
-    file size and status code counts."""
-    print("Total file size: {}".format(total_size))
-    for code in sorted(status_counts):
-        print("{}: {}".format(code, status_counts[code]))
+def print_stats(total_size, status_counts):
+    """Print accumulated metrics.
+
+    Args:
+        size (int): The accumulated read file size.
+        status_codes (dict): The accumulated count of status codes.
+    """
+    print("File size: {}".format(total_size))
+    for key in sorted(status_counts):
+        print("{}: {}".format(key, status_counts[key]))
 
 
 total_size = 0
 status_counts = {}
-valid_status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
-line_count = 0
-
+valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+count = 0
 try:
-    # Looping through each line in stdin
     for line in sys.stdin:
-        # Printing accumulated metrics every 10 lines
-        if line_count == 10:
-            print_metrics(total_size, status_counts)
-            line_count = 1
+        if count == 10:
+            print_stats(total_size, status_counts)
+            count = 1
         else:
-            line_count += 1
-        # Parsing line and updating accumulated metrics
+            count += 1
         line = line.split()
         try:
             total_size += int(line[-1])
         except (IndexError, ValueError):
             pass
         try:
-            if line[-2] in valid_status_codes:
+            if line[-2] in valid_codes:
                 if status_counts.get(line[-2], -1) == -1:
                     status_counts[line[-2]] = 1
                 else:
                     status_counts[line[-2]] += 1
         except IndexError:
             pass
-
-    # Printing final accumulated metrics
-    print_metrics(total_size, status_counts)
-
+    print_stats(total_size, status_counts)
 except KeyboardInterrupt:
-    # Handle keyboard interrupt by printing final accumulated metrics
-    print_metrics(total_size, status_counts)
-    raise  # Re-raising KeyboardInterrupt to exit gracefully with error message
+    print_stats(total_size, status_counts)
+    raise
