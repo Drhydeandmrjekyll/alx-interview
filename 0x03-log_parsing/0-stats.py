@@ -1,63 +1,45 @@
 #!/usr/bin/python3
-"""
-Log Parsing Script - Reads stdin, computes metrics, and prints statistics.
-"""
-
+"""Module read stdin and compute metrics"""
 import sys
 
 
-def print_stats(total_size, status_codes):
+def print_stats(size, status_codes):
+    """Print accumulated metrics.
+
+    Args:
+        size (int): Accumulated read file size.
+        status_codes (dict): Accumulated count of status codes.
     """
-    Prints statistics including total file size and status codes.
-    """
-    print("File size: {}".format(total_size))
-    for code in sorted(status_codes):
-        print("{}: {}".format(code, status_codes[code]))
+    print("File size: {}".format(size))
+    for key in sorted(status_codes):
+        print("{}: {}".format(key, status_codes[key]))
 
 
-def parse_line(line):
-    """
-    Parses a log line and extracts status code and file size.
-    """
-    parts = line.split()
-    if len(parts) >= 9:
-        status_code = parts[-2]
-        file_size = parts[-1]
-
-        return (
-            int(status_code) if status_code.isdigit() else None,
-            int(file_size) if file_size.isdigit() else 0
-        )
-    return None, 0
-
-
-def main():
-    """
-    Main function to read input, parse lines, and print statistics.
-    """
-    total_size = 0
-    status_codes = {}
-
-    try:
-        for i, line in enumerate(sys.stdin, 1):
-            status_code, file_size = parse_line(line)
-            if status_code is not None:
-                total_size += file_size
-                status_codes[status_code] = (
-                    status_codes.get(status_code, 0) + 1
-                )
-
-            if i % 10 == 0:
-                print_stats(total_size, status_codes)
-
-    except KeyboardInterrupt:
-        # Handle keyboard interrupt, print final stats, and exit
-        print_stats(total_size, status_codes)
-        sys.exit(0)
-    except BrokenPipeError:
-        # Ignore BrokenPipeError when output not consumed by next process
-        sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
+size = 0
+status_codes = {}
+valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+count = 0
+try:
+    for line in sys.stdin:
+        if count == 10:
+            print_stats(size, status_codes)
+            count = 1
+        else:
+            count += 1
+        line = line.split()
+        try:
+            size += int(line[-1])
+        except (IndexError, ValueError):
+            pass
+        try:
+            if line[-2] in valid_codes:
+                if status_codes.get(line[-2], -1) == -1:
+                    status_codes[line[-2]] = 1
+                else:
+                    status_codes[line[-2]] += 1
+        except IndexError:
+            pass
+    print_stats(size, status_codes)
+except KeyboardInterrupt:
+    print_stats(size, status_codes)
+    raise
