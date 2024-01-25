@@ -20,6 +20,7 @@ status_counts = {}
 valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
 count = 0
 try:
+    # Looping through each line in stdin
     for line in sys.stdin:
         if count == 10:
             print_stats(total_size, status_counts)
@@ -41,5 +42,6 @@ try:
             pass
     print_stats(total_size, status_counts)
 except KeyboardInterrupt:
+    # Handle keyboard interrupt by printing final accumulated metrics
     print_stats(total_size, status_counts)
     raise
