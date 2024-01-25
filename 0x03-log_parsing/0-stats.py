@@ -17,7 +17,7 @@ def print_stats(total_size, status_counts):
 
 total_size = 0
 status_counts = {}
-valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+valid_status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
 count = 0
 try:
     # Looping through each line in stdin
@@ -33,7 +33,7 @@ try:
         except (IndexError, ValueError):
             pass
         try:
-            if line[-2] in valid_codes:
+            if line[-2] in valid_status_codes:
                 if status_counts.get(line[-2], -1) == -1:
                     status_counts[line[-2]] = 1
                 else:
