@@ -18,13 +18,15 @@ def validUTF8(data):
             bytes_remaining -= 1
         else:
             # Count number of leading 1s to determine byte length
-            if num >> 3 == 0b11110:
+            if num >> 7 == 0b0:
+                bytes_remaining = 0
+            elif num >> 3 == 0b11110:
                 bytes_remaining = 3
             elif num >> 4 == 0b1110:
                 bytes_remaining = 2
             elif num >> 5 == 0b110:
                 bytes_remaining = 1
-            elif num >> 7:
+            else:
                 return False
 
     return bytes_remaining == 0
