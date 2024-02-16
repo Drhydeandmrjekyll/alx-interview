@@ -4,7 +4,7 @@ const request = require('request');
 const movieId = process.argv[2];
 const url = `https://swapi-api.hbtn.io/api/films/${movieId}/`;
 
-function fetchCharacter(characterUrl) {
+function fetchCharacter (characterUrl) {
   return new Promise((resolve, reject) => {
     request(characterUrl, function (error, response, body) {
       if (!error && response.statusCode === 200) {
