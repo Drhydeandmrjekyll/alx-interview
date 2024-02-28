@@ -13,17 +13,25 @@ def makeChange(coins, total):
     Returns:
         int: Fewest number of coins needed to meet total
     """
-    if total < 1:
-        return 0
+    memo = {}
 
-    dp = [float('inf')] * (total + 1)
-    dp[0] = 0
+    def dp(total):
+        if total < 0:
+            return float('inf')
+        if total == 0:
+            return 0
+        if total in memo:
+            return memo[total]
 
-    for coin in coins:
-        for j in range(coin, total + 1):
-            dp[j] = min(dp[j], dp[j - coin] + 1)
+        min_coins = float('inf')
+        for coin in coins:
+            min_coins = min(min_coins, dp(total - coin) + 1)
 
-    return dp[total] if dp[total] != float('inf') else -1
+        memo[total] = min_coins
+        return min_coins
+
+    result = dp(total)
+    return result if result != float('inf') else -1
 
 
 if __name__ == "__main__":
