@@ -8,11 +8,7 @@ def is_prime(n):
     """Check if a number is prime"""
     if n <= 1:
         return False
-    if n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-    for i in range(3, int(n ** 0.5) + 1, 2):
+    for i in range(2, int(n ** 0.5) + 1):
         if n % i == 0:
             return False
     return True
@@ -33,21 +29,24 @@ def isWinner(x, nums):
     if not nums or x <= 0:
         return None
 
-    # Function to determine the winner of each round
-    def play_round(n):
-        largest_prime_factor = 1
+    def count_primes(n):
+        # Use dynamic programming approach avoid redundant prime calculations
+        primes = [False, False] + [True] * (n - 1)
         for i in range(2, int(n ** 0.5) + 1):
-            if n % i == 0 and is_prime(i):
-                largest_prime_factor = max(largest_prime_factor, i)
-                quotient = n // i
-                if is_prime(quotient):
-                    largest_prime_factor = max(largest_prime_factor, quotient)
-        return largest_prime_factor
+            if primes[i]:
+                for j in range(i * i, n + 1, i):
+                    primes[j] = False
+        return sum(primes)
 
-    # Counting wins for each player
-    ben_wins = sum(1 for n in nums if play_round(n) == 1)
+    def play_round(n):
+        return max(i for i in range(2, n + 1) if is_prime(i))
 
-    # Determining the winner based on the number of wins
+    ben_wins = 0
+    for n in nums:
+        prime_count = count_primes(n)
+        if prime_count % 2 == 0:
+            ben_wins += 1
+
     if ben_wins > x // 2:
         return "Ben"
     elif ben_wins < x // 2:
